@@ -55,7 +55,7 @@ namespace Lab8
                     continue;
                 }
                 moreiInfo = "";
-                while(!Regex.IsMatch(moreiInfo,"^[yYNn]"))
+                while(!Regex.IsMatch(moreiInfo,@"^[yYNn]"))
                 {
                     System.Console.WriteLine("Would you like to know more about {0}?(yes or no):",p.name);
                     moreiInfo = System.Console.ReadLine();
@@ -68,19 +68,33 @@ namespace Lab8
                     isMore = false;
             }
         }
-        static void UserInputLoop(Person[] people)
+        static bool UserInputLoop(Person[] people)
         {
             int stuNum;
+            string repeat;
             try{
                 System.Console.WriteLine("Enter a number 1-{0}", people.Length );
                 stuNum = int.Parse(System.Console.ReadLine());
                 DisplayPerson(people[stuNum-1],stuNum);
+                repeat = "";
+                while (!Regex.IsMatch(repeat, @"^[yYnN]"))
+                {
+                    System.Console.WriteLine("Enter another Username? (yes or no):");
+                    repeat = System.Console.ReadLine();
+                }
+                if(Regex.IsMatch(repeat,@"^[nN]"))
+                    return false;
 
+            }
+            catch( IndexOutOfRangeException)
+            {
+                System.Console.WriteLine("That number is not between {0} and {1}",1,people.Length);
             }
             catch (Exception)
             {
                 System.Console.WriteLine("ERROR");
             }
+            return true;
 
         }
         static void Main(string[] args)
@@ -126,7 +140,7 @@ namespace Lab8
             {
                 System.Console.WriteLine("There are not enough Lines in the file.");
             }
-            UserInputLoop(people);
+            while (UserInputLoop(people));
 
 
 
