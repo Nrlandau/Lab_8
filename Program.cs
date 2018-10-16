@@ -95,6 +95,10 @@ namespace Lab8
             {
                 System.Console.WriteLine("That number is not between {0} and {1}",1,people.Length);
             }
+            catch(FormatException)
+            {
+                System.Console.WriteLine("That is not a number.");
+            }
             catch (Exception)
             {
                 System.Console.WriteLine("ERROR");
@@ -140,13 +144,19 @@ namespace Lab8
                 {
                     System.Console.WriteLine("File cannot be found. ");
                     if(isArgs)
-                        return -1;
+                        return 1;
                 }
                 catch (UnauthorizedAccessException)
                 {
                     System.Console.WriteLine("File connot be accessed. ");
                     if(isArgs)
-                        return -1;
+                        return 2;
+                }
+                catch (System.ArgumentException)
+                {
+                    System.Console.WriteLine("You must put a filename in");
+                    if(isArgs)
+                        return 3;
                 }
                 catch (FormatException)
                 {
