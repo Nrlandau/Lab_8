@@ -97,6 +97,14 @@ namespace Lab8
             return true;
 
         }
+        static int getPeopleInFile(string file)
+        {
+            StreamReader sr = new StreamReader(file);
+            int length = 0;
+            while(sr.ReadLine() != null)
+                length++;
+            return length/3;
+        }
         static void Main(string[] args)
         {
             string filePath;
@@ -110,7 +118,7 @@ namespace Lab8
                     System.Console.WriteLine("Input a file");
                     filePath = System.Console.ReadLine();//"C:\\Code\\Files\\Lab8\\People.txt";
                     sr = new StreamReader(filePath);
-                    totalLength = int.Parse(sr.ReadLine());
+                    totalLength = getPeopleInFile(filePath);
                     people = new Person[totalLength];
                     break;
                 }
@@ -135,15 +143,12 @@ namespace Lab8
             try
             { 
                 MakePeople(sr, people);
+                while (UserInputLoop(people));
             }
             catch(IndexOutOfRangeException)
             {
                 System.Console.WriteLine("There are not enough Lines in the file.");
             }
-            while (UserInputLoop(people));
-
-
-
         }
     }
 }
