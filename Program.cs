@@ -105,18 +105,27 @@ namespace Lab8
                 length++;
             return length/3;
         }
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             string filePath;
+            bool isArgs = false;
             StreamReader sr;
             int totalLength = 0;
             Person [] people;
             while (true)
             {
                 try 
-                {
-                    System.Console.WriteLine("Input a file");
-                    filePath = System.Console.ReadLine();//"C:\\Code\\Files\\Lab8\\People.txt";
+                {   if (args.Length >0)
+                    {
+                        filePath = args[0];
+                        System.Console.WriteLine(args[0]);
+                        isArgs = true;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Input a file");
+                        filePath = System.Console.ReadLine();//"C:\\Code\\Files\\Lab8\\People.txt";
+                    }
                     sr = new StreamReader(filePath);
                     totalLength = getPeopleInFile(filePath);
                     people = new Person[totalLength];
@@ -125,20 +134,27 @@ namespace Lab8
                 catch (FileNotFoundException)
                 {
                     System.Console.WriteLine("File cannot be found. ");
+                    if(isArgs)
+                        return -1;
                 }
                 catch (UnauthorizedAccessException)
                 {
                     System.Console.WriteLine("File connot be accessed. ");
+                    if(isArgs)
+                        return -1;
                 }
                 catch (FormatException)
                 {
                     System.Console.WriteLine("Format Exception");
+                    if(isArgs)
+                        return -1;
                 }
                 catch (Exception ex)
                 {
                     System.Console.WriteLine("UNKOWN ERROR");
                     throw ex;
                 }
+                
             }
             try
             { 
@@ -149,6 +165,7 @@ namespace Lab8
             {
                 System.Console.WriteLine("There are not enough Lines in the file.");
             }
+            return 0;
         }
     }
 }

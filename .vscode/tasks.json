@@ -16,10 +16,20 @@
             "command": "dotnet",
             "type": "shell",
             "args": [
+                "run"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Run2",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
                 "run",
-                "${workspaceFolder}"
+                "people.txt"
             ],
             "problemMatcher": []
         }
+
     ]
 }
