@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+Lab 8 by Nicholas Landau
+This program takes a file and lets a user input what user id they want to see. 
+ */
+
+using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -12,7 +17,7 @@ namespace Lab8
     }
     class Program
     {
-        static void MakePeople(StreamReader file, Person[] people)
+        static void MakePeople(StreamReader file, Person[] people) //takes the file and parses it into name, hometwon and favfood.
         {
             for(int i =0; i < people.Length; i++)
             {
@@ -24,7 +29,7 @@ namespace Lab8
                     throw new IndexOutOfRangeException();
             }
         }
-        static void DisplayPeople(Person[] people)
+        static void DisplayPeople(Person[] people) //unused  displays the whole file.
         {
             int i =1;
             foreach(Person p in people)
@@ -33,7 +38,7 @@ namespace Lab8
                 i++;
             }
         }
-        static void DisplayPerson(Person p , int index)
+        static void DisplayPerson(Person p , int index) //displays information about one person.
         {
             string moreiInfo ="";
             bool isMore = true;
@@ -55,7 +60,7 @@ namespace Lab8
                     continue;
                 }
                 moreiInfo = "";
-                while(!Regex.IsMatch(moreiInfo,@"^[yYNn]"))
+                while(!Regex.IsMatch(moreiInfo,@"^[yYNn]")) //repeat?
                 {
                     System.Console.WriteLine("Would you like to know more about {0}?(yes or no):",p.name);
                     moreiInfo = System.Console.ReadLine();
@@ -68,7 +73,7 @@ namespace Lab8
                     isMore = false;
             }
         }
-        static bool UserInputLoop(Person[] people)
+        static bool UserInputLoop(Person[] people) // gets which person to use.
         {
             int stuNum;
             string repeat;
@@ -77,7 +82,7 @@ namespace Lab8
                 stuNum = int.Parse(System.Console.ReadLine());
                 DisplayPerson(people[stuNum-1],stuNum);
                 repeat = "";
-                while (!Regex.IsMatch(repeat, @"^[yYnN]"))
+                while (!Regex.IsMatch(repeat, @"^[yYnN]")) //repeat
                 {
                     System.Console.WriteLine("Enter another Username? (yes or no):");
                     repeat = System.Console.ReadLine();
@@ -97,7 +102,7 @@ namespace Lab8
             return true;
 
         }
-        static int getPeopleInFile(string file)
+        static int getPeopleInFile(string file) //returns how many perople are in the file.
         {
             StreamReader sr = new StreamReader(file);
             int length = 0;
@@ -115,7 +120,7 @@ namespace Lab8
             while (true)
             {
                 try 
-                {   if (args.Length >0)
+                {   if (args.Length >0) // if sending arguments from the command line
                     {
                         filePath = args[0];
                         System.Console.WriteLine(args[0]);
@@ -159,7 +164,7 @@ namespace Lab8
             try
             { 
                 MakePeople(sr, people);
-                while (UserInputLoop(people));
+                while (UserInputLoop(people)); // main loop
             }
             catch(IndexOutOfRangeException)
             {
