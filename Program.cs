@@ -16,9 +16,12 @@ namespace Lab8
         {
             for(int i =0; i < people.Length; i++)
             {
-                people[i].name = file.ReadLine();
-                people[i].hometown = file.ReadLine();
-                people[i].favFood = file.ReadLine();
+                if((people[i].name = file.ReadLine()) == null)
+                    throw new IndexOutOfRangeException();
+                if((people[i].hometown = file.ReadLine())==null)
+                    throw new IndexOutOfRangeException();
+                if((people[i].favFood = file.ReadLine())==null)
+                    throw new IndexOutOfRangeException();
             }
         }
         static void DisplayPeople(Person[] people)
@@ -40,11 +43,11 @@ namespace Lab8
                 moreiInfo = System.Console.ReadLine();
                 if(moreiInfo.ToLower() == "hometown")
                 {
-                    System.Console.Write("{0} is from {1} ",p.name,p.hometown);
+                    System.Console.WriteLine("{0} is from {1} ",p.name,p.hometown);
                 }
                 else if(Regex.IsMatch(moreiInfo.ToLower(), @"food"))
                 {
-                    System.Console.Write("{0} likes {1} ",p.name,p.favFood);
+                    System.Console.WriteLine("{0} likes {1} ",p.name,p.favFood);
                 }
                 else
                 {
@@ -54,12 +57,12 @@ namespace Lab8
                 moreiInfo = "";
                 while(!Regex.IsMatch(moreiInfo,"^[yYNn]"))
                 {
-                    System.Console.WriteLine("Would you like to know more?(yes or no):");
+                    System.Console.WriteLine("Would you like to know more about {0}?(yes or no):",p.name);
                     moreiInfo = System.Console.ReadLine();
                 }
                 if(Regex.IsMatch(moreiInfo,@"^[yY]"))
                 {
-                    System.Console.WriteLine("What would you like to know about {1}(enter \"Hometown\" or \"Favorite food\")");
+                    System.Console.WriteLine("What would you like to know about {0}(enter \"Hometown\" or \"Favorite food\")",p.name);
                 }
                 else
                     isMore = false;
@@ -82,11 +85,47 @@ namespace Lab8
         }
         static void Main(string[] args)
         {
-            string filePath = "C:\\Code\\Files\\Lab8\\People.txt";
-            StreamReader sr = new StreamReader(filePath);
-            int totalLength = int.Parse(sr.ReadLine());
-            Person [] people = new Person[totalLength];
-            MakePeople(sr, people);
+            string filePath;
+            StreamReader sr;
+            int totalLength = 0;
+            Person [] people;
+            while (true)
+            {
+                try 
+                {
+                    System.Console.WriteLine("Input a file");
+                    filePath = System.Console.ReadLine();//"C:\\Code\\Files\\Lab8\\People.txt";
+                    sr = new StreamReader(filePath);
+                    totalLength = int.Parse(sr.ReadLine());
+                    people = new Person[totalLength];
+                    break;
+                }
+                catch (FileNotFoundException)
+                {
+                    System.Console.WriteLine("File cannot be found. ");
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    System.Console.WriteLine("File connot be accessed. ");
+                }
+                catch (FormatException)
+                {
+                    System.Console.WriteLine("Format Exception");
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine("UNKOWN ERROR");
+                    throw ex;
+                }
+            }
+            try
+            { 
+                MakePeople(sr, people);
+            }
+            catch(IndexOutOfRangeException)
+            {
+                System.Console.WriteLine("There are not enough Lines in the file.");
+            }
             UserInputLoop(people);
 
 
